@@ -14,7 +14,7 @@ type ProductsSectionProps = {
 
 export default function ProductsSection({ products, onAddToCart, isLoading }: ProductsSectionProps) {
   return (
-    <div id="productsPage">
+    <>
       <h1 className="section-title">Semua Produk</h1>
       <div className="product-grid" id="allProductGrid">
         {isLoading ? (
@@ -22,10 +22,10 @@ export default function ProductsSection({ products, onAddToCart, isLoading }: Pr
                 <div key={index} className="product-card">
                     <Skeleton className="product-image" />
                     <div className="product-info">
-                        <Skeleton className="h-6 w-3/4 mb-2" />
-                        <Skeleton className="h-8 w-1/2 my-3" />
-                        <Skeleton className="h-4 w-1/4 mb-2" />
-                        <Skeleton className="h-10 w-full rounded-full" />
+                        <Skeleton style={{height: '1.1rem', width: '75%', marginBottom: '0.3rem'}} />
+                        <Skeleton style={{height: '1rem', width: '50%', marginBottom: '0.5rem'}} />
+                        <Skeleton style={{height: '0.9rem', width: '30%', marginBottom: '1rem'}} />
+                        <Skeleton style={{height: '40px', width: '100%', borderRadius: '12px'}} />
                     </div>
                 </div>
             ))
@@ -35,7 +35,7 @@ export default function ProductsSection({ products, onAddToCart, isLoading }: Pr
           products.map(p => {
             const stock = p.stock || 0;
             const stockText = stock > 0 ? `Stok: ${stock}` : 'Stok habis';
-            const disabled = stock <= 0;
+            const isOutOfStock = stock <= 0;
             return (
               <div key={p.id} className="product-card">
                 <img src={escapeHTML(p.imageUrl || DEFAULT_IMAGE)} alt={p.name} className="product-image" loading="lazy" />
@@ -43,8 +43,8 @@ export default function ProductsSection({ products, onAddToCart, isLoading }: Pr
                   <div className="product-title">{escapeHTML(p.name)}</div>
                   <div className="product-price">{formatRupiah(p.price)}</div>
                   <div className="product-stock">{stockText}</div>
-                  <button className="btn-add" onClick={() => onAddToCart(p)} disabled={disabled}>
-                    <i className="fas fa-shopping-bag"></i> {stock > 0 ? 'Tambah' : 'Habis'}
+                  <button className="btn-add" onClick={() => onAddToCart(p)} disabled={isOutOfStock}>
+                    <i className="fas fa-shopping-bag"></i> {isOutOfStock ? 'Habis' : 'Tambah'}
                   </button>
                 </div>
               </div>
@@ -52,6 +52,6 @@ export default function ProductsSection({ products, onAddToCart, isLoading }: Pr
           })
         )}
       </div>
-    </div>
+    </>
   );
 }

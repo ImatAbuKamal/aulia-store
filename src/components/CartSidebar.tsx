@@ -31,13 +31,14 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
       email: customerEmail, 
       phone: customerPhone 
     });
+    // Don't clear form on payment failure
     if (result?.success) {
-      setCustomerName('');
-      setCustomerEmail('');
-      setCustomerPhone('');
+      // Logic to clear cart and close sidebar is handled in page.tsx
     }
     setIsCheckingOut(false);
   };
+  
+  const showForm = items.length > 0;
 
   return (
     <aside className={`cart-sidebar ${isOpen ? 'open' : ''}`} id="cartSidebar">
@@ -48,7 +49,7 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
       <div className="cart-scroll-area">
         <div className="cart-items" id="cartItems">
           {items.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem', color: 'var(--text-light-color)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem', color: '#64748b' }}>
               <i className="fas fa-shopping-bag fa-3x" style={{ opacity: 0.5 }}></i>
               <p style={{ marginTop: '1rem' }}>Keranjang kosong</p>
             </div>
@@ -70,8 +71,7 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
             ))
           )}
         </div>
-        {items.length > 0 && (
-          <div className="checkout-form-container" style={{ display: 'block' }}>
+        <div className="checkout-form-container" style={{ display: showForm ? 'block' : 'none' }}>
             <div className="checkout-form">
               <div className="form-group">
                 <label htmlFor="customerName">Nama Lengkap</label>
@@ -86,8 +86,7 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
                 <input type="tel" id="customerPhone" placeholder="+62 812 3456 7890" autoComplete="tel" required value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
               </div>
             </div>
-          </div>
-        )}
+        </div>
       </div>
       <div className="cart-footer">
         <div className="cart-total">
@@ -95,7 +94,7 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
           <span id="cartTotal">{formatRupiah(cartTotal)}</span>
         </div>
         <button className="btn-checkout" id="checkoutBtn" onClick={handleCheckoutClick} disabled={items.length === 0 || isCheckingOut}>
-          {isCheckingOut ? <Loader /> : <i className="fas fa-lock"></i>}
+          {isCheckingOut ? <span className="loading"></span> : <i className="fas fa-lock"></i>}
           {isCheckingOut ? 'Memproses...' : 'Checkout'}
         </button>
       </div>

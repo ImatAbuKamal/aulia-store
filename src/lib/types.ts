@@ -39,3 +39,11 @@ export type CartItem = {
   quantity: number;
   stock: number;
 };
+
+export type FooterData = {
+  storeName?: string;
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
+  tiktok?: string;
+};

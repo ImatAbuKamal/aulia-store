@@ -16,48 +16,47 @@ export default function CarouselSection({ items, isLoading }: CarouselProps) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const resetTimeout = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  }, []);
-
   const goToSlide = useCallback((index: number) => {
-    setCurrentIndex(index);
     if (containerRef.current) {
       const slideWidth = containerRef.current.clientWidth;
       containerRef.current.scrollTo({
         left: index * slideWidth,
         behavior: 'smooth'
       });
+      setCurrentIndex(index);
+    }
+  }, []);
+
+  const resetTimeout = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
   }, []);
 
   useEffect(() => {
     resetTimeout();
-    if (items.length > 0) {
+    if (items.length > 1) {
       timeoutRef.current = setTimeout(
-        () => {
-          const nextIndex = (currentIndex + 1) % items.length;
-          goToSlide(nextIndex);
-        },
+        () => goToSlide((currentIndex + 1) % items.length),
         3000
       );
     }
     return () => {
       resetTimeout();
     };
-  }, [currentIndex, items, resetTimeout, goToSlide]);
-
+  }, [currentIndex, items, goToSlide, resetTimeout]);
+  
   const handleDotClick = (index: number) => {
     goToSlide(index);
+    resetTimeout(); // Reset timer on manual navigation
   };
+
 
   if (isLoading) {
     return (
-      <div className="carousel-section">
-        <div className="carousel-container">
-          <Skeleton className="skeleton-carousel" />
+      <div className="carousel-section" id="carouselSection">
+        <div className="carousel-container" id="carouselContainer">
+          <div className="skeleton-carousel skeleton"></div>
         </div>
       </div>
     );
