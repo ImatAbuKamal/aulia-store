@@ -198,7 +198,7 @@ export default function Home() {
 
     if (!validateName(name)) return showValidationError('Nama tidak valid', 'Minimal 2 huruf dan hanya karakter yang valid.');
     if (!validateEmail(email)) return showValidationError('Email tidak valid', 'Format email salah.');
-    if (!validatePhone(phone)) return showValidationError('Nomor telepon tidak valid', 'Gunakan format 08... atau +628... (10-13 digit).');
+    if (!validatePhone(phone)) return showValidationError('Nomor telepon tidak valid', 'Gunakan format internasional (cth: +6281234567890).');
     
     for (const item of cart) {
         const product = products.find((p) => p.id === item.id);

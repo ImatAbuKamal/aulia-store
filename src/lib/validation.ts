@@ -10,9 +10,8 @@ export function validateEmail(email: string): boolean {
 }
 
 export function validatePhone(phone: string): boolean {
-  // Validates Indonesian phone numbers (e.g., 081234567890 or +6281234567890)
-  // Allows spaces or hyphens which are removed before validation.
-  // Total length 10-13 digits.
-  const regex = /^(?:\+62|0)8[1-9][0-9]{7,10}$/;
-  return regex.test(phone.replace(/[\s-]/g, ""));
+  // Validates international phone numbers in E.164 format
+  // Starts with '+', followed by 9 to 15 digits.
+  const regex = /^\+[1-9]\d{9,14}$/;
+  return regex.test(phone);
 }

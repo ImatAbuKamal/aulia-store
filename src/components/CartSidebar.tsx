@@ -24,6 +24,18 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
     return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }, [items]);
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only numbers and a leading '+'
+    const sanitizedValue = value.replace(/[^0-9+]/g, '');
+    // Ensure '+' is only at the beginning
+    if (sanitizedValue.lastIndexOf('+') > 0) {
+      setCustomerPhone(sanitizedValue.replace(/(?!^)\+/g, ''));
+    } else {
+      setCustomerPhone(sanitizedValue);
+    }
+  };
+
   const handleCheckoutClick = async () => {
     setIsCheckingOut(true);
     const result = await onCheckout({ 
@@ -83,7 +95,7 @@ export default function CartSidebar({ isOpen, onClose, items, onUpdateQuantity, 
               </div>
               <div className="form-group">
                 <label htmlFor="customerPhone">Nomor Telepon</label>
-                <input type="tel" id="customerPhone" placeholder="+62 812 3456 7890" autoComplete="tel" required value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} />
+                <input type="tel" id="customerPhone" placeholder="+6281234567890" autoComplete="tel" required value={customerPhone} onChange={handlePhoneChange} />
               </div>
             </div>
         </div>
