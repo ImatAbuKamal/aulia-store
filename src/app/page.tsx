@@ -64,31 +64,39 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    const loadAllData = () => {
-      fetchData("products").then(data => {
-        if (data) setProducts(data.products || []);
-      }).finally(() => setIsLoading(prev => ({...prev, products: false})));
+  const loadAllData = useCallback(() => {
+    setIsLoading({
+      products: true,
+      carousel: true,
+      about: true,
+      contact: true,
+      footer: true,
+    });
+    
+    fetchData("products").then(data => {
+      if (data) setProducts(data.products || []);
+    }).finally(() => setIsLoading(prev => ({...prev, products: false})));
 
-      fetchData("home").then(data => {
-        if (data) setCarousels(data.carousels || []);
-      }).finally(() => setIsLoading(prev => ({...prev, carousel: false})));
+    fetchData("home").then(data => {
+      if (data) setCarousels(data.carousels || []);
+    }).finally(() => setIsLoading(prev => ({...prev, carousel: false})));
 
-      fetchData("about").then(data => {
-        if (data) setAbouts(data.abouts || data.data || data.about || []);
-      }).finally(() => setIsLoading(prev => ({...prev, about: false})));
+    fetchData("about").then(data => {
+      if (data) setAbouts(data.abouts || data.data || data.about || []);
+    }).finally(() => setIsLoading(prev => ({...prev, about: false})));
 
-      fetchData("contact").then(data => {
-        if (data) setContacts(data.contacts?.[0] || data.data?.[0] || data.contact?.[0] || null);
-      }).finally(() => setIsLoading(prev => ({...prev, contact: false})));
-      
-      fetchData("footer").then(data => {
-        if (data) setFooterData(data.footer || {});
-      }).finally(() => setIsLoading(prev => ({...prev, footer: false})));
-    };
-
-    loadAllData();
+    fetchData("contact").then(data => {
+      if (data) setContacts(data.contacts?.[0] || data.data?.[0] || data.contact?.[0] || null);
+    }).finally(() => setIsLoading(prev => ({...prev, contact: false})));
+    
+    fetchData("footer").then(data => {
+      if (data) setFooterData(data.footer || {});
+    }).finally(() => setIsLoading(prev => ({...prev, footer: false})));
   }, [fetchData]);
+
+  useEffect(() => {
+    loadAllData();
+  }, [loadAllData]);
 
   useEffect(() => {
     try {
@@ -240,7 +248,7 @@ export default function Home() {
             setIsCartOpen(false);
             Swal.fire({ icon: 'success', title: 'Pembayaran berhasil!', text: 'Terima kasih telah berbelanja.', toast: true, position: 'top-end', showConfirmButton: false, timer: 4000 });
             
-            fetchData("products").then(data => data && setProducts(data.products || []));
+            loadAllData();
           },
           onError: (err: any) => showValidationError('Pembayaran gagal', err.message || ''),
           onClose: () => { /* Logic is handled by isCheckingOut state in CartSidebar */ }
@@ -254,7 +262,7 @@ export default function Home() {
       return { success: false };
     }
     return { success: false };
-  }, [cart, products, fetchData]);
+  }, [cart, products, loadAllData]);
 
   const isOverlayVisible = isCartOpen || isMobileMenuOpen;
 
