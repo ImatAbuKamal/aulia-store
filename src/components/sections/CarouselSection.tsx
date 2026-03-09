@@ -75,7 +75,7 @@ export default function CarouselSection({ items, isLoading }: CarouselProps) {
   }
 
   return (
-    <div className="carousel-section" id="carouselSection">
+    <div className="carousel-section" id="carouselSection" style={{position: 'relative'}}>
       <div className="carousel-container" id="carouselContainer" ref={containerRef}>
         {items.map((item, index) => (
           <div key={index} className="carousel-item">

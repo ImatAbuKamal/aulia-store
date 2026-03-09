@@ -254,7 +254,7 @@ header {
 
 /* Carousel - dengan fallback untuk scroll behavior */
 .carousel-section {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; Dihapus untuk pengalaman layar penuh */
 }
 
 .carousel-container {
@@ -267,9 +267,9 @@ header {
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  border-radius: 20px;
+  /* border-radius: 20px; Dihapus untuk layar penuh */
   background: #f1f5f9;
-  height: 400px;
+  height: 100vh;
 }
 
 .carousel-item {
@@ -332,6 +332,10 @@ header {
   justify-content: center;
   gap: 0.5rem;
   margin-top: 1rem;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: 1;
 }
 
 .dot {
@@ -931,10 +935,6 @@ footer {
     right: -100%;
   }
 
-  .carousel-container {
-    height: 300px;
-  }
-
   .carousel-caption h3 {
     font-size: 1.2rem;
   }
@@ -945,10 +945,6 @@ footer {
 
   .container {
     padding: 1rem;
-  }
-
-  .product-grid {
-    gap: 1rem;
   }
 
   .contact-grid {
