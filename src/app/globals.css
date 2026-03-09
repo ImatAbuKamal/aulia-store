@@ -351,12 +351,32 @@ header {
 
 /* Product Grid */
 .product-grid {
-  display: -ms-grid;
   display: grid;
-  -ms-grid-columns: repeat(auto-fill, minmax(260px, 1fr));
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr; /* Default: 1 column for mobile */
+  gap: 1rem;
   margin-top: 2rem;
+}
+
+/* For tablets (e.g. iPad portrait) and larger, start with 2 columns */
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* For laptops, use 3 columns */
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* For large desktops, use 4 columns */
+@media (min-width: 1280px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .product-card {
@@ -928,7 +948,6 @@ footer {
   }
 
   .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
   }
 
