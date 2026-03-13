@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Skeleton } from './ui/skeleton';
 
 type NavLink = {
   page: string;
@@ -15,16 +16,21 @@ type HeaderProps = {
   cartItemCount: number;
   onCartToggle: () => void;
   onHamburgerClick: () => void;
+  isLoading: boolean;
 };
 
-export default function Header({ storeName, navLinks, currentPage, onNavClick, cartItemCount, onCartToggle, onHamburgerClick }: HeaderProps) {
+export default function Header({ storeName, navLinks, currentPage, onNavClick, cartItemCount, onCartToggle, onHamburgerClick, isLoading }: HeaderProps) {
   return (
     <header>
       <div className="header-left">
         <div className="hamburger" id="hamburgerBtn" onClick={onHamburgerClick}>
           <i className="fas fa-bars"></i>
         </div>
-        <div className="logo" id="headerLogo">{storeName}</div>
+        {isLoading ? (
+          <Skeleton style={{ height: '1.5rem', width: '120px' }} />
+        ) : (
+          <div className="logo" id="headerLogo">{storeName}</div>
+        )}
         <nav className="desktop-nav" id="desktopNav">
           {navLinks.map(({ page, label }) => (
             <a

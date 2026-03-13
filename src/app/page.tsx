@@ -281,6 +281,7 @@ export default function Home() {
         cartItemCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
         onCartToggle={() => setIsCartOpen(true)}
         onHamburgerClick={() => setIsMobileMenuOpen(true)}
+        isLoading={isLoading.footer}
       />
       <MobileSidebar
         isOpen={isMobileMenuOpen}
@@ -289,6 +290,7 @@ export default function Home() {
         navLinks={navLinks}
         currentPage={currentPage}
         onNavClick={handleNavClick}
+        isLoading={isLoading.footer}
       />
       
       <div className={`overlay ${isOverlayVisible ? 'active' : ''}`} onClick={closeAllPopups}></div>

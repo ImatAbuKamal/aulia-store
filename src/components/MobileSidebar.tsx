@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Skeleton } from './ui/skeleton';
 
 type NavLink = {
   page: string;
@@ -14,9 +15,10 @@ type MobileSidebarProps = {
   currentPage: string;
   onNavClick: (page: string) => void;
   storeName: string;
+  isLoading: boolean;
 };
 
-export default function MobileSidebar({ isOpen, onClose, navLinks, currentPage, onNavClick, storeName }: MobileSidebarProps) {
+export default function MobileSidebar({ isOpen, onClose, navLinks, currentPage, onNavClick, storeName, isLoading }: MobileSidebarProps) {
   const handleNavClick = (page: string) => {
     onNavClick(page);
     onClose();
@@ -25,7 +27,11 @@ export default function MobileSidebar({ isOpen, onClose, navLinks, currentPage, 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar">
       <div className="sidebar-header">
-        <span className="logo" id="sidebarLogo">{storeName}</span>
+        {isLoading ? (
+          <Skeleton style={{ height: '1.2rem', width: '100px' }} />
+        ) : (
+          <span className="logo" id="sidebarLogo">{storeName}</span>
+        )}
         <i className="fas fa-times close-sidebar" id="closeSidebar" onClick={onClose}></i>
       </div>
       <nav className="sidebar-nav" id="sidebarNav">
