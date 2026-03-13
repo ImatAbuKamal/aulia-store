@@ -1,11 +1,33 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import React from "react";
+import { APP_SCRIPT_URL } from '@/lib/config';
+import type { FooterData } from '@/lib/types';
 
-export const metadata: Metadata = {
-  title: 'estetik.store – Modern & Estetik.',
-  description: 'Modern & Estetik.',
-};
+// Fungsi untuk mengambil data footer dari server
+async function getFooterData(): Promise<FooterData | null> {
+    try {
+        const res = await fetch(`${APP_SCRIPT_URL}?type=footer`, { next: { revalidate: 3600 } }); // Revalidate every hour
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.success ? (data.footer || null) : null;
+    } catch (err) {
+        console.error(`Error fetching footer for metadata:`, err);
+        return null;
+    }
+}
+
+// Fungsi untuk generate metadata dinamis
+export async function generateMetadata(): Promise<Metadata> {
+  const footerData = await getFooterData();
+  const storeName = footerData?.storeName || 'estetik.store';
+  
+  return {
+    title: `${storeName} – Modern & Estetik.`,
+    description: 'Modern & Estetik.',
+  }
+}
+
 
 export default function RootLayout({
   children,
